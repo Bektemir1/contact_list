@@ -1,26 +1,45 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="header-app">
+    <Header/>
+  </div>
+  <Contacts />
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Contacts from "@/components/Contacts";
+import Header from "@/components/Header";
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Contacts,
+    Header
+  },
+
+  methods:{
+
+    // get data from api and saving it to localStorage
+    async getContactList(){
+     await this.$axios.get('https://demo.sibers.com/users')
+      .then(res=>{
+        localStorage.setItem('contacts', JSON.stringify(res.data))
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
+  },
+  mounted(){
+
+    this.getContactList()
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+.header-app{
+  border-bottom:1px solid #dedede;
 }
+
 </style>
